@@ -217,14 +217,11 @@ class NotationTree extends BinSearchTree<string | number> {
 
         let s;
 
-        // Stack to hold nodes
         let stN = [];
 
-        // Stack to hold chars
         let stC = [];
         let t, t1, t2;
 
-        // Prioritising the operators
         let p = new Array(123);
         p['+'.charCodeAt(0)] = p['-'.charCodeAt(0)] = 1;
         p['/'.charCodeAt(0)] = p['*'.charCodeAt(0)] = 2;
@@ -253,7 +250,6 @@ class NotationTree extends BinSearchTree<string | number> {
                 stC.push(s[i]);
             }
 
-            // Push the operands in node stack
             else if ((/[a-zA-Z]/).test(s[i]))
             {
                 t = newNode(s[i]);
@@ -261,9 +257,6 @@ class NotationTree extends BinSearchTree<string | number> {
             }
             else if (p[s[i].charCodeAt(0)] > 0)
             {
-
-                // If an operator with lower or
-                // same associativity appears
                 while (stC.length != 0 && stC[stC.length - 1] != '('
                 && ((s[i] != '^' &&
                         p[stC[stC.length - 1].charCodeAt(0)] >=
@@ -273,30 +266,21 @@ class NotationTree extends BinSearchTree<string | number> {
                         p[s[i].charCodeAt(0)])))
                 {
 
-                    // Get and remove the top element
-                    // from the character stack
                     t = newNode(stC[stC.length - 1]);
                     stC.pop();
 
-                    // Get and remove the top element
-                    // from the node stack
                     t1 = stN[stN.length - 1];
                     stN.pop();
 
-                    // Get and remove the currently top
-                    // element from the node stack
                     t2 = stN[stN.length - 1];
                     stN.pop();
 
-                    // Update the tree
                     t.childA = t2;
                     t.childB = t1;
 
-                    // Push the node to the node stack
                     stN.push(t);
                 }
 
-                // Push s[i] to char stack
                 stC.push(s[i]);
             }
             else if (s[i] == ')')
